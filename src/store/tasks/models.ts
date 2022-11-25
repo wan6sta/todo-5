@@ -1,5 +1,5 @@
 import { FetchStatus } from '../todolists/models'
-import { ServerTask } from '../../api'
+import { ServerTask } from '../../api/models'
 
 export type TaskState = {
 	fetchStatus: FetchStatus

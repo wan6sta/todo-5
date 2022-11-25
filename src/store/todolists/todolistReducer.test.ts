@@ -7,7 +7,7 @@ import {
 	todolistReducer,
 	updateTodolistTitle
 } from './todolistReducer'
-import { ServerTodo } from '../../api'
+import { ServerTodo } from '../../api/models'
 import { TaskState } from '../tasks/models'
 import { taskReducer } from '../tasks/taskReducer'
 

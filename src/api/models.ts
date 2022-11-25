@@ -12,7 +12,7 @@ export const enum TaskStatuses {
 	Draft = 3
 }
 
-const enum TaskPriorities {
+export const enum TaskPriorities {
 	Low = 0,
 	Middle = 1,
 	Hi = 2,

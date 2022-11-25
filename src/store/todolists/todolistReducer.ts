@@ -1,5 +1,5 @@
 import { TodoFilter, TodolistState } from './models'
-import { ServerTodo } from '../../api'
+import { ServerTodo } from '../../api/models'
 
 const initialState: TodolistState = {
 	fetchStatus: 'idle',
