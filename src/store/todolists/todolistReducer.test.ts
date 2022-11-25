@@ -13,6 +13,11 @@ import { taskReducer } from '../tasks/taskReducer'
 
 let serverTodoState: ServerTodo[] = []
 
+let initialTodoState: TodolistState = {
+	fetchStatus: 'idle',
+	todolists: []
+}
+
 beforeEach(() => {
 	serverTodoState = [
 		{ id: '1', title: '123', order: 1, addedDate: 'fd' },
@@ -20,20 +25,18 @@ beforeEach(() => {
 		{ id: '3', title: '123131', order: 3, addedDate: 'sdsfsffdsf' },
 		{ id: '4', title: '12313123', order: 5, addedDate: 'dfsfds' }
 	]
+	initialTodoState = todolistReducer(
+		initialTodoState,
+		setTodolists(serverTodoState)
+	)
 })
 
 test('setTodolists', () => {
-	const initialState: TodolistState = {
-		fetchStatus: 'idle',
-		todolists: []
-	}
-
 	const action = setTodolists(serverTodoState)
+	const newState = todolistReducer(initialTodoState, action)
 
-	const newState = todolistReducer(initialState, action)
-
-	expect(newState !== initialState).toBeTruthy()
-	expect(newState.fetchStatus === initialState.fetchStatus).toBeTruthy()
+	expect(newState !== initialTodoState).toBeTruthy()
+	expect(newState.fetchStatus === initialTodoState.fetchStatus).toBeTruthy()
 	expect(newState.todolists[0]).toEqual({
 		id: '1',
 		title: '123',
@@ -48,23 +51,13 @@ test('setTodolists', () => {
 })
 
 test('createTodolist', () => {
-	const startState: TodolistState = {
-		fetchStatus: 'idle',
-		todolists: []
-	}
-
-	const setTodolistsAction = setTodolists(serverTodoState)
-
-	const initialState = todolistReducer(startState, setTodolistsAction)
-
 	const action = createTodolist({
 		id: '123123',
 		title: 'sfsfsdf',
 		addedDate: '123123',
 		order: 11
 	})
-
-	const newState = todolistReducer(initialState, action)
+	const newState = todolistReducer(initialTodoState, action)
 
 	expect(newState.todolists.length === 5).toBeTruthy()
 	expect(newState.todolists[1].id === '1').toBeTruthy()
@@ -75,11 +68,6 @@ test('createTodolist', () => {
 })
 
 test('deleteTodolist', () => {
-	const startState: TodolistState = {
-		fetchStatus: 'idle',
-		todolists: []
-	}
-
 	const initialTasksState: TaskState = {
 		fetchStatus: 'idle',
 		tasks: {
@@ -89,10 +77,6 @@ test('deleteTodolist', () => {
 			'4': []
 		}
 	}
-
-	const setTodolistsAction = setTodolists(serverTodoState)
-
-	const initialTodoState = todolistReducer(startState, setTodolistsAction)
 
 	const todoAction = deleteTodolist('3')
 
@@ -107,39 +91,19 @@ test('deleteTodolist', () => {
 })
 
 test('updateTodolistTitle', () => {
-	const startState: TodolistState = {
-		fetchStatus: 'idle',
-		todolists: []
-	}
-
-	const setTodolistsAction = setTodolists(serverTodoState)
-
-	const initialState = todolistReducer(startState, setTodolistsAction)
-
 	const action = updateTodolistTitle('4', 'NEW TITLE!#!#@')
-
-	const newState = todolistReducer(initialState, action)
+	const newState = todolistReducer(initialTodoState, action)
 
 	expect(
-		newState.todolists.length === initialState.todolists.length
+		newState.todolists.length === initialTodoState.todolists.length
 	).toBeTruthy()
 	expect(newState.todolists[3].title === 'NEW TITLE!#!#@').toBeTruthy()
 	expect(newState.todolists[1].id === '2').toBeTruthy()
 })
 
 test('setFilter', () => {
-	const startState: TodolistState = {
-		fetchStatus: 'idle',
-		todolists: []
-	}
-
-	const setTodolistsAction = setTodolists(serverTodoState)
-
-	const initialState = todolistReducer(startState, setTodolistsAction)
-
 	const action = setFilter('1', 'active')
-
-	const newState = todolistReducer(initialState, action)
+	const newState = todolistReducer(initialTodoState, action)
 
 	expect(newState.todolists[0].filter === 'active').toBeTruthy()
 	expect(newState.todolists.length).toBe(4)
